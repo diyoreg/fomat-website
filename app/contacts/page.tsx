@@ -26,10 +26,19 @@ export default function ContactsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate submission delay
-    await new Promise((res) => setTimeout(res, 800));
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
+      setSubmitted(true);
+    } catch {
+      alert("Ошибка отправки. Попробуйте ещё раз или свяжитесь с нами напрямую.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
