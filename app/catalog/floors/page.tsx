@@ -18,8 +18,8 @@ const subcategories = [
     desc: "Модульное ковровое покрытие для коммерческих пространств. Высокая износостойкость, акустический комфорт, простота замены отдельных элементов.",
     href: "/catalog/floors/carpet-tiles",
     brands: [
-      { label: "Shaw Contract", href: "/catalog/floors/carpet-tiles" },
-      { label: "FOMAT | Carpet Tiles", href: "/catalog/floors/carpet-tiles" },
+      { label: "Shaw Contract", href: "/catalog/floors/carpet-tiles?brand=shaw" },
+      { label: "FOMAT | Carpet Tiles", href: "/catalog/floors/carpet-tiles?brand=fomat" },
     ],
   },
   {
@@ -28,8 +28,8 @@ const subcategories = [
     desc: "Премиальное ПВХ-покрытие с защитным слоем Exoguard+®. Имитация дерева, камня и бетона. Идеально для офисов с высокой нагрузкой.",
     href: "/catalog/floors/lvt",
     brands: [
-      { label: "Shaw Contract", href: "/catalog/floors/lvt" },
-      { label: "FOMAT | Luxury Vinyl", href: "/catalog/floors/lvt" },
+      { label: "Shaw Contract", href: "/catalog/floors/lvt?brand=shaw" },
+      { label: "FOMAT | Luxury Vinyl", href: "/catalog/floors/lvt?brand=fomat" },
     ],
   },
 ];

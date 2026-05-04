@@ -158,7 +158,8 @@ export default function ContactsPage() {
                     </svg>
                   ),
                   label: "Адрес",
-                  value: "г. Ташкент, Узбекистан",
+                  value: "Улица Паркент 180, Яшнабадский район, Ташкент, Узбекистан",
+                  href: "https://maps.app.goo.gl/NSTx1RNX7LdBLVvq7",
                 },
                 {
                   icon: (
@@ -167,8 +168,8 @@ export default function ContactsPage() {
                     </svg>
                   ),
                   label: "Телефон",
-                  value: "+998 XX XXX-XX-XX",
-                  href: "tel:+998000000000",
+                  value: "+998 99 910 29 10",
+                  href: "tel:+998999102910",
                 },
                 {
                   icon: (
@@ -199,17 +200,29 @@ export default function ContactsPage() {
                 </div>
               ))}
 
-              {/* Map placeholder */}
-              <div className="h-64 bg-[#e6e4d8] rounded-sm overflow-hidden relative mt-8">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8c6d51" strokeWidth="1.5" className="mx-auto mb-3">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
-                    <p className="text-[#22333b]/40 text-xs tracking-wide">Карта будет добавлена</p>
-                  </div>
+              <div className="mt-8 space-y-3">
+                <div className="h-64 rounded-sm overflow-hidden border border-[#e6e4d8]">
+                  <iframe
+                    title="FOMAT на карте"
+                    src="https://maps.google.com/maps?q=41.3150842,69.2825258&hl=ru&z=16&output=embed"
+                    width="100%"
+                    height="100%"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    style={{ border: 0 }}
+                  />
                 </div>
+                <a
+                  href="https://maps.app.goo.gl/NSTx1RNX7LdBLVvq7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-[#8c6d51] hover:text-[#22333b] transition-colors"
+                >
+                  Открыть в Google Картах
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M7 17l9.2-9.2M17 17V7H7" />
+                  </svg>
+                </a>
               </div>
 
               {/* Working hours */}

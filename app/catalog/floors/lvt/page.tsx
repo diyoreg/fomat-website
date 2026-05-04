@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import InnerHero from "@/components/ui/InnerHero";
 import { useInView } from "@/hooks/useInView";
 
@@ -40,7 +41,17 @@ const fomatSpecs = [
 ];
 
 export default function LVTPage() {
-  const [active, setActive] = useState<"shaw" | "fomat">("shaw");
+  return (
+    <Suspense fallback={null}>
+      <LVTPageContent />
+    </Suspense>
+  );
+}
+
+function LVTPageContent() {
+  const params = useSearchParams();
+  const initialBrand = params.get("brand") === "fomat" ? "fomat" : "shaw";
+  const [active, setActive] = useState<"shaw" | "fomat">(initialBrand);
   const overviewRef = useInView();
   const advRef = useInView();
   const specsRef = useInView();
