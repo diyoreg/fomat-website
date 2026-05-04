@@ -9,6 +9,11 @@ export const categoryImagesQuery = `*[_type == "categoryImage"]{
   image{ ..., asset-> }
 }`;
 
+export const floorSubcategoryImagesQuery = `*[_type == "floorSubcategoryImage"]{
+  _id, slot,
+  image{ ..., asset-> }
+}`;
+
 export const carpetTileCollectionsQuery = `*[_type == "carpetTileCollection" && brand == $brand] | order(order asc, name asc){
   _id, name, brand, order,
   images[]{ ..., asset-> }

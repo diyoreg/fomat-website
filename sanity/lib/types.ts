@@ -73,3 +73,21 @@ export function indexBySection(docs: CategoryImageDoc[]): CategoryImageMap {
   }
   return map;
 }
+
+export type FloorSlot = "raisedFloors" | "carpetTiles" | "lvt";
+
+export type FloorSubcategoryImageDoc = {
+  _id: string;
+  slot: FloorSlot;
+  image: SanityImage;
+};
+
+export type FloorSlotMap = Partial<Record<FloorSlot, SanityImage>>;
+
+export function indexBySlot(docs: FloorSubcategoryImageDoc[]): FloorSlotMap {
+  const map: FloorSlotMap = {};
+  for (const doc of docs) {
+    if (doc.slot && doc.image) map[doc.slot] = doc.image;
+  }
+  return map;
+}
