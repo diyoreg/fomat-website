@@ -2,7 +2,7 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import SanityImage from "@/components/ui/SanityImage";
 import type { SanityImage as SanityImageType } from "@/sanity/lib/types";
@@ -24,21 +24,28 @@ export default function AutoSlider({
   showDots = true,
   priority = false,
 }: Props) {
+  // Embla loop with fewer than 4 slides renders clones incorrectly
+  // (visual duplicates appear on adjacent positions). Fix per official
+  // Embla guidance: duplicate the slide array internally to reach >=4.
+  const slides = useMemo(() => {
+    if (images.length === 0) return [];
+    if (images.length < 4) return [...images, ...images];
+    return images;
+  }, [images]);
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay, stopOnInteraction: false, stopOnMouseEnter: true }),
   ]);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
   const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+    if (!emblaApi || images.length === 0) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap() % images.length);
+  }, [emblaApi, images.length]);
 
   useEffect(() => {
     if (!emblaApi) return;
-    setScrollSnaps(emblaApi.scrollSnapList());
     emblaApi.on("select", onSelect);
     onSelect();
     return () => {
@@ -52,7 +59,7 @@ export default function AutoSlider({
     <div className={`relative ${className}`}>
       <div className={`overflow-hidden rounded-sm ${aspect}`} ref={emblaRef}>
         <div className="flex h-full">
-          {images.map((img, i) => (
+          {slides.map((img, i) => (
             <div key={i} className="relative flex-[0_0_100%] min-w-0 h-full">
               <SanityImage
                 image={img}
@@ -66,9 +73,9 @@ export default function AutoSlider({
         </div>
       </div>
 
-      {showDots && scrollSnaps.length > 1 && (
+      {showDots && images.length > 1 && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {scrollSnaps.map((_, i) => (
+          {images.map((_, i) => (
             <button
               key={i}
               onClick={() => emblaApi?.scrollTo(i)}
