@@ -13,7 +13,7 @@ const BRAND_OPTIONS = [
 
 export const partitionImage = defineType({
   name: "partitionImage",
-  title: "Перегородки — изображение раздела",
+  title: "Перегородки — изображения раздела",
   type: "document",
   fields: [
     defineField({
@@ -26,26 +26,38 @@ export const partitionImage = defineType({
     defineField({
       name: "slot",
       title: "Раздел",
-      description: "Какому блоку соответствует это изображение",
+      description: "Какому блоку соответствует этот документ",
       type: "string",
       options: { list: SLOT_OPTIONS, layout: "radio" },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "image",
-      title: "Изображение",
-      type: "image",
-      options: { hotspot: true },
-      fields: [{ name: "alt", title: "Alt-текст", type: "string" }],
-      validation: (Rule) => Rule.required(),
+      name: "images",
+      title: "Изображения",
+      description:
+        "Несколько фото — будут листаться слайдером в карточке раздела на /catalog/partitions",
+      type: "array",
+      of: [
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [{ name: "alt", title: "Alt-текст", type: "string" }],
+        },
+      ],
+      validation: (Rule) => Rule.min(1),
     }),
   ],
   preview: {
-    select: { slot: "slot", brand: "brand", media: "image" },
-    prepare({ slot, brand, media }) {
+    select: { slot: "slot", brand: "brand", images: "images", media: "images.0" },
+    prepare({ slot, brand, images, media }) {
       const slotLabel = SLOT_OPTIONS.find((s) => s.value === slot)?.title ?? slot;
       const brandLabel = BRAND_OPTIONS.find((b) => b.value === brand)?.title ?? brand;
-      return { title: slotLabel, subtitle: brandLabel, media };
+      const count = Array.isArray(images) ? images.length : 0;
+      return {
+        title: slotLabel,
+        subtitle: `${brandLabel} — ${count} фото`,
+        media,
+      };
     },
   },
 });

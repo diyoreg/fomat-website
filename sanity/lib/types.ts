@@ -33,7 +33,7 @@ export type PartitionImageDoc = {
   _id: string;
   slot: PartitionSlot;
   brand: PartitionBrand;
-  image: SanityImage;
+  images?: SanityImage[];
 };
 
 export type GalleryGroup = {

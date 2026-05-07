@@ -21,7 +21,7 @@ export const carpetTileCollectionsQuery = `*[_type == "carpetTileCollection" && 
 
 export const partitionImagesQuery = `*[_type == "partitionImage" && brand == $brand]{
   _id, slot, brand,
-  image{ ..., asset-> }
+  images[]{ ..., asset-> }
 }`;
 
 export const galleryGroupQuery = `*[_type == "galleryGroup" && section == $section][0]{

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import InnerHero from "@/components/ui/InnerHero";
+import AutoSlider from "@/components/ui/AutoSlider";
 import SanityImage from "@/components/ui/SanityImage";
 import { useInView } from "@/hooks/useInView";
 import type { PartitionImageDoc, PartitionSlot } from "@/sanity/lib/types";
@@ -127,9 +128,9 @@ function PartitionsPageContent({ jebImages, fomatImages }: Props) {
               </div>
             </div>
             <div className="h-80 lg:h-96 rounded-sm relative overflow-hidden" style={{ backgroundColor: isJeb ? "#1a2830" : "#4a3728" }}>
-              {activeImages[0]?.image ? (
+              {activeImages[0]?.images?.[0] ? (
                 <SanityImage
-                  image={activeImages[0].image}
+                  image={activeImages[0].images[0]}
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"
@@ -159,26 +160,22 @@ function PartitionsPageContent({ jebImages, fomatImages }: Props) {
           <div className={`grid grid-cols-1 sm:grid-cols-2 ${slots.length === 3 ? "lg:grid-cols-3" : ""} gap-6`}>
             {slots.map((slot, i) => {
               const doc = activeImages.find((d) => d.slot === slot);
+              const slotImages = doc?.images ?? [];
               return (
                 <div
                   key={slot}
                   className={`transition-all duration-700 ${slotsRef.inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
-                  <div className="aspect-[4/3] rounded-sm overflow-hidden bg-[#22333b] relative group">
-                    {doc?.image ? (
-                      <SanityImage
-                        image={doc.image}
-                        fill
-                        sizes="(min-width: 1024px) 33vw, 100vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    ) : (
+                  {slotImages.length > 0 ? (
+                    <AutoSlider images={slotImages} aspect="aspect-[4/3]" delay={5000} />
+                  ) : (
+                    <div className="aspect-[4/3] rounded-sm overflow-hidden bg-[#22333b] relative">
                       <div className="absolute inset-0 flex items-center justify-center">
                         <p className="text-[#e6e4d8]/40 text-xs tracking-wide">Фото будет добавлено</p>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                   <p className="mt-3 text-[#22333b] text-base font-medium tracking-wide" style={{ fontFamily: "var(--font-montserrat)" }}>
                     {SLOT_LABELS[slot]}
                   </p>
