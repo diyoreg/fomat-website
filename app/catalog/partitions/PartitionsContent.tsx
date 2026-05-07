@@ -5,7 +5,6 @@ import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import InnerHero from "@/components/ui/InnerHero";
 import AutoSlider from "@/components/ui/AutoSlider";
-import SanityImage from "@/components/ui/SanityImage";
 import { useInView } from "@/hooks/useInView";
 import type { PartitionImageDoc, PartitionSlot } from "@/sanity/lib/types";
 
@@ -76,6 +75,9 @@ function PartitionsPageContent({ jebImages, fomatImages }: Props) {
   // FOMAT shows partitions/doors/pods; JEB only partitions/doors
   const slots: PartitionSlot[] =
     active === "fomat" ? ["partitions", "doors", "pods"] : ["partitions", "doors"];
+  const heroImages = slots
+    .map((s) => activeImages.find((d) => d.slot === s)?.images?.[0])
+    .filter((img): img is NonNullable<typeof img> => Boolean(img));
   const advRef = useInView();
   const specsRef = useInView();
   const ctaRef = useInView();
@@ -128,12 +130,12 @@ function PartitionsPageContent({ jebImages, fomatImages }: Props) {
               </div>
             </div>
             <div className="h-80 lg:h-96 rounded-sm relative overflow-hidden" style={{ backgroundColor: isJeb ? "#1a2830" : "#4a3728" }}>
-              {activeImages[0]?.images?.[0] ? (
-                <SanityImage
-                  image={activeImages[0].images[0]}
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
+              {heroImages.length > 0 ? (
+                <AutoSlider
+                  images={heroImages}
+                  aspect="h-full"
+                  className="h-full"
+                  showDots={false}
                 />
               ) : (
                 <>
