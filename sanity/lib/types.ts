@@ -26,6 +26,14 @@ export type CarpetTileCollection = {
   images?: SanityImage[];
 };
 
+export type LvtCollection = {
+  _id: string;
+  name: string;
+  brand: "shaw" | "fomat";
+  order?: number;
+  images?: SanityImage[];
+};
+
 export type PartitionSlot = "partitions" | "doors" | "pods";
 export type PartitionBrand = "jeb" | "fomat";
 

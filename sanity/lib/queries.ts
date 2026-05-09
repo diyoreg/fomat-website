@@ -19,6 +19,11 @@ export const carpetTileCollectionsQuery = `*[_type == "carpetTileCollection" && 
   images[]{ ..., asset-> }
 }`;
 
+export const lvtCollectionsQuery = `*[_type == "lvtCollection" && brand == $brand] | order(order asc, name asc){
+  _id, name, brand, order,
+  images[]{ ..., asset-> }
+}`;
+
 export const partitionImagesQuery = `*[_type == "partitionImage" && brand == $brand]{
   _id, slot, brand,
   images[]{ ..., asset-> }
