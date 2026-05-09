@@ -159,7 +159,7 @@ export default function ContactsPage() {
                   ),
                   label: "Адрес",
                   value: "Улица Паркент 180, Яшнабадский район, Ташкент, Узбекистан",
-                  href: "https://maps.app.goo.gl/NSTx1RNX7LdBLVvq7",
+                  href: "https://www.google.com/maps?q=41.308665,69.336362",
                 },
                 {
                   icon: (
@@ -204,16 +204,17 @@ export default function ContactsPage() {
                 <div className="h-64 rounded-sm overflow-hidden border border-[#e6e4d8]">
                   <iframe
                     title="FOMAT на карте"
-                    src="https://maps.google.com/maps?q=41.3150842,69.2825258&hl=ru&z=16&output=embed"
+                    src="https://www.google.com/maps/embed?pb=!1m13!1m8!1m3!1d5994.018259437632!2d69.336362!3d41.308665000000005!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDE4JzMxLjIiTiA2OcKwMjAnMTAuOSJF!5e0!3m2!1sru!2s!4v1778354497422!5m2!1sru!2s"
                     width="100%"
                     height="100%"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     style={{ border: 0 }}
+                    allowFullScreen
                   />
                 </div>
                 <a
-                  href="https://maps.app.goo.gl/NSTx1RNX7LdBLVvq7"
+                  href="https://www.google.com/maps?q=41.308665,69.336362"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm text-[#8c6d51] hover:text-[#22333b] transition-colors"
