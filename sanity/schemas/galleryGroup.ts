@@ -3,12 +3,13 @@ import { defineField, defineType } from "sanity";
 const SECTION_OPTIONS = [
   { title: "Акустика", value: "acoustics" },
   { title: "Фальшполы", value: "raisedFloors" },
+  { title: "Освещение", value: "lights" },
 ];
 
 export const galleryGroup = defineType({
   name: "galleryGroup",
   title: "Галерея раздела",
-  description: "Плоский список фото для разделов «Акустика» и «Фальшполы»",
+  description: "Плоский список фото для разделов «Акустика», «Фальшполы» и «Освещение»",
   type: "document",
   fields: [
     defineField({
