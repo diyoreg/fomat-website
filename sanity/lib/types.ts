@@ -51,11 +51,8 @@ export type GalleryGroup = {
 export type ProjectDoc = {
   _id: string;
   title: string;
-  year?: number;
-  description?: string;
-  solutions?: string[];
   order?: number;
-  image: SanityImage;
+  images: SanityImage[];
 };
 
 export type ClientLogoDoc = {

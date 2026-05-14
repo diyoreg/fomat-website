@@ -33,9 +33,9 @@ export const galleryGroupQuery = `*[_type == "galleryGroup" && section == $secti
   images[]{ ..., asset-> }
 }`;
 
-export const projectsQuery = `*[_type == "projectGallery"] | order(order asc, year desc){
-  _id, title, year, description, solutions, order,
-  image{ ..., asset-> }
+export const projectsQuery = `*[_type == "projectGallery"] | order(order asc, title asc){
+  _id, title, order,
+  images[]{ ..., asset-> }
 }`;
 
 export const clientLogosQuery = `*[_type == "clientLogo"] | order(order asc, name asc){

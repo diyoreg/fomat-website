@@ -1,17 +1,18 @@
 "use client";
 
-import InnerHero from "@/components/ui/InnerHero";
+import Link from "next/link";
+import AutoSlider from "@/components/ui/AutoSlider";
 import SanityImage from "@/components/ui/SanityImage";
 import { useInView } from "@/hooks/useInView";
 import type { ClientLogoDoc, ProjectDoc } from "@/sanity/lib/types";
 
 const fallbackProjects = [
-  { _id: "f1", title: "Бизнес-центр «Центр»", description: "Ковровая плитка Shaw Contract", year: 2024, color: "#22333b" },
-  { _id: "f2", title: "Офис технологической компании", description: "LVT + Акустические панели", year: 2024, color: "#2d4a54" },
-  { _id: "f3", title: "Коворкинг «Ташкент Хаб»", description: "Carpet Tiles + Перегородки JEB", year: 2023, color: "#4a3728" },
-  { _id: "f4", title: "Головной офис банка", description: "Фальшполы + LVT Shaw Contract", year: 2023, color: "#3a5566" },
-  { _id: "f5", title: "Административное здание", description: "Акустика + Освещение", year: 2023, color: "#8c6d51" },
-  { _id: "f6", title: "IT-компания, опен-спейс", description: "Ковровая плитка FOMAT + JEB", year: 2022, color: "#1a2830" },
+  { _id: "f1", title: "Бизнес-центр «Центр»", color: "#22333b" },
+  { _id: "f2", title: "Офис технологической компании", color: "#2d4a54" },
+  { _id: "f3", title: "Коворкинг «Ташкент Хаб»", color: "#4a3728" },
+  { _id: "f4", title: "Головной офис банка", color: "#3a5566" },
+  { _id: "f5", title: "Административное здание", color: "#8c6d51" },
+  { _id: "f6", title: "IT-компания, опен-спейс", color: "#1a2830" },
 ];
 
 type Props = {
@@ -25,17 +26,52 @@ export default function ProjectsContent({ projects, logos }: Props) {
   const ctaRef = useInView();
 
   const hasProjects = projects.length > 0;
+  const heroImages = projects
+    .map((p) => p.images?.[0])
+    .filter((img): img is NonNullable<typeof img> => Boolean(img));
 
   return (
     <div>
-      <InnerHero
-        title="Наши клиенты"
-        subtitle="Портфолио реализованных проектов — офисы, бизнес-центры и коворкинги, где использованы материалы FOMAT."
-        breadcrumbs={[
-          { label: "Главная", href: "/" },
-          { label: "Наши клиенты" },
-        ]}
-      />
+      <section className="pt-28 pb-16 bg-[#22333b] relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(#e6e4d8 1px, transparent 1px), linear-gradient(90deg, #e6e4d8 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+        <div className="absolute right-0 top-0 w-[40vw] h-[40vw] rounded-full bg-[#8c6d51]/5 blur-3xl" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+          <nav className="flex flex-wrap items-center gap-1.5 text-xs text-[#e6e4d8]/35 mb-8">
+            <Link href="/" className="hover:text-[#8c6d51] transition-colors duration-200">
+              Главная
+            </Link>
+            <span>/</span>
+            <span className="text-[#e6e4d8]/70">Наши клиенты</span>
+          </nav>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <h1
+                className="text-4xl md:text-5xl lg:text-6xl font-semibold text-[#e6e4d8] tracking-tight leading-tight"
+                style={{ fontFamily: "var(--font-montserrat)" }}
+              >
+                Наши клиенты
+              </h1>
+              <p className="mt-5 text-[#e6e4d8]/50 text-base md:text-lg max-w-2xl leading-relaxed">
+                Портфолио реализованных проектов — офисы, бизнес-центры и коворкинги, где использованы материалы FOMAT.
+              </p>
+            </div>
+            {heroImages.length > 0 && (
+              <div>
+                <AutoSlider images={heroImages} aspect="aspect-[4/3]" delay={5000} priority />
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
 
       <section className="py-20 bg-[#fafaf8]">
         <div ref={gridRef.ref} className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -44,38 +80,22 @@ export default function ProjectsContent({ projects, logos }: Props) {
               {projects.map((project, i) => (
                 <div
                   key={project._id}
-                  className={`group rounded-sm overflow-hidden transition-all duration-700 ${gridRef.inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                  className={`rounded-sm overflow-hidden transition-all duration-700 ${gridRef.inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
                   style={{ transitionDelay: `${i * 80}ms` }}
                 >
-                  <div className="aspect-[4/3] relative overflow-hidden bg-[#22333b]">
-                    {project.image ? (
-                      <SanityImage
-                        image={project.image}
-                        fill
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    ) : null}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                  </div>
-
+                  <AutoSlider
+                    images={project.images ?? []}
+                    aspect="aspect-[4/3]"
+                    delay={5500}
+                    showDots
+                  />
                   <div className="p-5 bg-white border border-t-0 border-[#e6e4d8] rounded-b-sm">
-                    {project.year && (
-                      <p className="text-[#8c6d51] text-xs font-medium tracking-widest uppercase mb-1">{project.year}</p>
-                    )}
-                    <h3 className="text-[#22333b] font-semibold mb-1" style={{ fontFamily: "var(--font-montserrat)" }}>{project.title}</h3>
-                    {project.description && (
-                      <p className="text-[#22333b]/50 text-sm">{project.description}</p>
-                    )}
-                    {project.solutions && project.solutions.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-1.5">
-                        {project.solutions.map((s) => (
-                          <span key={s} className="text-[10px] text-[#22333b]/60 border border-[#e6e4d8] px-2 py-1 rounded-sm tracking-wide">
-                            {s}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    <h3
+                      className="text-[#22333b] font-semibold"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      {project.title}
+                    </h3>
                   </div>
                 </div>
               ))}
@@ -86,7 +106,7 @@ export default function ProjectsContent({ projects, logos }: Props) {
                 {fallbackProjects.map((project, i) => (
                   <div
                     key={project._id}
-                    className={`group rounded-sm overflow-hidden transition-all duration-700 ${gridRef.inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                    className={`rounded-sm overflow-hidden transition-all duration-700 ${gridRef.inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
                     style={{ transitionDelay: `${i * 80}ms` }}
                   >
                     <div
@@ -99,9 +119,12 @@ export default function ProjectsContent({ projects, logos }: Props) {
                       </div>
                     </div>
                     <div className="p-5 bg-white border border-t-0 border-[#e6e4d8] rounded-b-sm">
-                      <p className="text-[#8c6d51] text-xs font-medium tracking-widest uppercase mb-1">{project.year}</p>
-                      <h3 className="text-[#22333b] font-semibold mb-1" style={{ fontFamily: "var(--font-montserrat)" }}>{project.title}</h3>
-                      <p className="text-[#22333b]/50 text-sm">{project.description}</p>
+                      <h3
+                        className="text-[#22333b] font-semibold"
+                        style={{ fontFamily: "var(--font-montserrat)" }}
+                      >
+                        {project.title}
+                      </h3>
                     </div>
                   </div>
                 ))}
